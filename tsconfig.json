@@ -1,21 +1,31 @@
 {
   "compilerOptions": {
     "outDir": "./app/static/dist",
-    "rootDir": "./app/static", // Update the rootDir to include the directory where intermediate.tsx is located
+    "rootDir": "./app/static",
     "target": "es5",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react", // Enable JSX
-    "jsxFactory": "h", // Use Preact's h function
-    "jsxFragmentFactory": "Fragment" // Use Preact's Fragment
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
   },
   "include": [
-    // "app/static/scripts/**/*.ts",
-    "app/static/**/*.tsx" // Include .tsx files
+    "app/static/**/*.tsx",
+    "app/static/**/*.ts",
+    ".eslintrc.cjs",
+    "tailwind.config.js", // Add this line to include the Tailwind config file
+    // "webpack.config.mjs", // Add this line to include the Webpack config file
+    "webpack.config.mjs",
+    "postcss.config.js", // Add this line to include the PostCSS config file
+    "assets.d.ts"
   ],
+  "paths": {
+    "@/*": [
+      "./*"
+    ]
+  },
   "exclude": [
     "node_modules"
   ]

@@ -1,5 +1,3 @@
-The most up-to-date version of this project is available [here](https://github.com/VillageR88/fptt-scoot-multi-page-website). This repository currently serves as a placeholder example.
-
 # Flask-Preact-Typescript-Tailwind Template
 
 This is a template for a Flask Python application with Preact, Typescript, and Tailwind CSS.

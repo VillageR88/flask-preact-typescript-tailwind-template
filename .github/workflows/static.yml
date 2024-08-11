@@ -1,8 +1,6 @@
-name: Deploy static content to Pages
+name: Build and Deploy to GitHub Pages
 
 on:
-  push:
-    branches: ["master"]
   workflow_dispatch:
 
 permissions:
@@ -11,47 +9,57 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
 
-      - name: Install Python Dependencies
-        run: pip install -r requirements.txt
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
         timeout-minutes: 2
 
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: '18'
         timeout-minutes: 2
 
-      - name: Install npm Dependencies
+      - name: Install npm dependencies
         run: npm install
         timeout-minutes: 2
 
+      - name: Build static files
+        run: npm run build
+        timeout-minutes: 2
+
       - name: Run Freeze Build
-        run: python app/freeze.py
+        run: |
+          python app/freeze.py
         timeout-minutes: 2
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "app/build"
+          path: 'app/build'
         timeout-minutes: 2
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
         timeout-minutes: 2
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
